@@ -11,18 +11,19 @@ datetime = [
     # DataItem("11204", baseUrl + "d93f538b-b567-45fc-a4ce-56edf4998381"),
     # DataItem("11203", baseUrl + "a4e4facb-ee44-477e-9f24-eb1385c6797e"),
     # DataItem("11201", baseUrl + "52f7c0a4-e160-404b-9b55-593d41f51753"),  # 112 年
-DataItem("11112", baseUrl + "94aa0e00-3bd6-4b8e-96c3-06b0f2a5389b"),
-DataItem("11111", baseUrl + "1612620b-0a18-4c57-8d5b-b3ca47554b2e"),
-DataItem("11110", baseUrl + "e7081dd6-824c-4ae4-b4da-0089807dc2a9"),
-DataItem("11109", baseUrl + "2bc64f35-187d-44a4-9a76-22ddd0434102"),
-DataItem("11108", baseUrl + "1048d4fa-01b0-4e16-b26c-7d1d613661b9"),
-DataItem("11107", baseUrl + "9aeafaf0-da61-4109-a73a-15a7b45c6421"),
-DataItem("11106", baseUrl + "d30d182f-2cca-4649-b44d-dd2818ad5310"),
-DataItem("11105", baseUrl + "3b6c0b91-3f33-4713-b6f0-9a237c75c437"),
-DataItem("11104", baseUrl + "3e46c34a-b270-4b70-8ad5-b77a21c4eddc"),
-DataItem("11103", baseUrl + "9372de93-3304-4066-b8a9-f2b6ba318487"),
-DataItem("11102", baseUrl + "e971ee12-51ac-48d4-ab99-d4e6ef5261b0"),
-DataItem("11101", baseUrl + "70a05607-86d4-4e55-ab32-9195a0df4fff"),
+# DataItem("11112", baseUrl + "94aa0e00-3bd6-4b8e-96c3-06b0f2a5389b"),
+# DataItem("11111", baseUrl + "1612620b-0a18-4c57-8d5b-b3ca47554b2e"),
+# DataItem("11110", baseUrl + "e7081dd6-824c-4ae4-b4da-0089807dc2a9"),
+# DataItem("11109", baseUrl + "2bc64f35-187d-44a4-9a76-22ddd0434102"),
+# DataItem("11108", baseUrl + "1048d4fa-01b0-4e16-b26c-7d1d613661b9"),
+# DataItem("11107", baseUrl + "9aeafaf0-da61-4109-a73a-15a7b45c6421"),
+# DataItem("11106", baseUrl + "d30d182f-2cca-4649-b44d-dd2818ad5310"),
+# DataItem("11105", baseUrl + "3b6c0b91-3f33-4713-b6f0-9a237c75c437"),
+# DataItem("11104", baseUrl + "3e46c34a-b270-4b70-8ad5-b77a21c4eddc"),
+# DataItem("11103", baseUrl + "9372de93-3304-4066-b8a9-f2b6ba318487"),
+# DataItem("11102", baseUrl + "e971ee12-51ac-48d4-ab99-d4e6ef5261b0"),
+# DataItem("11101", baseUrl + "70a05607-86d4-4e55-ab32-9195a0df4fff"),    # 111 年
+    
 ]
 
 
@@ -174,7 +175,8 @@ if __name__ == "__main__":
     num_processes = min(len(datetime), multiprocessing.cpu_count())
     pool = multiprocessing.Pool(processes=num_processes)
 
-    # 使用map函數將不同的 DataItem 分配給多個進程處理
-    pool.map(process_data_item, datetime)
+    # 使用map函數將不同的 DataItem 分配給多個進程處理，使用map_async來避免封裝問題
+    result = pool.map_async(process_data_item, datetime)
+    result.wait()
     pool.close()
     pool.join()
